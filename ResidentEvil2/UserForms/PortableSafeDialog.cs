@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ResidentEvil2
+namespace ResidentEvil2.UserForms
 {
-    public partial class MainMenu : Form
+    public partial class PortableSafeDialog : Form
     {
-        public MainMenu()
+        public PortableSafeDialog()
         {
             InitializeComponent();
         }
