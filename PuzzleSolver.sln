@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResidentEvil2", "ResidentEvil2\ResidentEvil2.csproj", "{52DFFFAB-C3EC-447E-BC9A-DD2D014693C6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52DFFFAB-C3EC-447E-BC9A-DD2D014693C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52DFFFAB-C3EC-447E-BC9A-DD2D014693C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52DFFFAB-C3EC-447E-BC9A-DD2D014693C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52DFFFAB-C3EC-447E-BC9A-DD2D014693C6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {27468D49-EC88-4A5F-A8B4-0330CCEC3649}
+	EndGlobalSection
+EndGlobal
