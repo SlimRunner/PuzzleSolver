@@ -31,11 +31,15 @@
             this.MainPanel = new System.Windows.Forms.Panel();
             this.MainTabs = new System.Windows.Forms.TabControl();
             this.TabSolver = new System.Windows.Forms.TabPage();
-            this.TabPractice = new System.Windows.Forms.TabPage();
             this.SolverTabLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.TabPractice = new System.Windows.Forms.TabPage();
+            this.PracticeTabLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.CanvasSafeUpper = new System.Windows.Forms.Panel();
             this.MainPanel.SuspendLayout();
             this.MainTabs.SuspendLayout();
             this.TabSolver.SuspendLayout();
+            this.TabPractice.SuspendLayout();
+            this.PracticeTabLayout.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainPanel
@@ -73,17 +77,6 @@
             this.TabSolver.Text = "Solver";
             this.TabSolver.UseVisualStyleBackColor = true;
             // 
-            // TabPractice
-            // 
-            this.TabPractice.Location = new System.Drawing.Point(4, 30);
-            this.TabPractice.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.TabPractice.Name = "TabPractice";
-            this.TabPractice.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.TabPractice.Size = new System.Drawing.Size(603, 398);
-            this.TabPractice.TabIndex = 1;
-            this.TabPractice.Text = "Practice";
-            this.TabPractice.UseVisualStyleBackColor = true;
-            // 
             // SolverTabLayout
             // 
             this.SolverTabLayout.ColumnCount = 2;
@@ -98,6 +91,42 @@
             this.SolverTabLayout.Size = new System.Drawing.Size(595, 388);
             this.SolverTabLayout.TabIndex = 0;
             // 
+            // TabPractice
+            // 
+            this.TabPractice.Controls.Add(this.PracticeTabLayout);
+            this.TabPractice.Location = new System.Drawing.Point(4, 30);
+            this.TabPractice.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.TabPractice.Name = "TabPractice";
+            this.TabPractice.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.TabPractice.Size = new System.Drawing.Size(603, 398);
+            this.TabPractice.TabIndex = 1;
+            this.TabPractice.Text = "Practice";
+            this.TabPractice.UseVisualStyleBackColor = true;
+            // 
+            // PracticeTabLayout
+            // 
+            this.PracticeTabLayout.ColumnCount = 2;
+            this.PracticeTabLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.PracticeTabLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.PracticeTabLayout.Controls.Add(this.CanvasSafeUpper, 0, 0);
+            this.PracticeTabLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PracticeTabLayout.Location = new System.Drawing.Point(4, 5);
+            this.PracticeTabLayout.Name = "PracticeTabLayout";
+            this.PracticeTabLayout.RowCount = 2;
+            this.PracticeTabLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.PracticeTabLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.PracticeTabLayout.Size = new System.Drawing.Size(595, 388);
+            this.PracticeTabLayout.TabIndex = 0;
+            // 
+            // CanvasSafeUpper
+            // 
+            this.CanvasSafeUpper.Location = new System.Drawing.Point(3, 3);
+            this.CanvasSafeUpper.Name = "CanvasSafeUpper";
+            this.CanvasSafeUpper.Size = new System.Drawing.Size(188, 170);
+            this.CanvasSafeUpper.TabIndex = 0;
+            this.CanvasSafeUpper.Paint += new System.Windows.Forms.PaintEventHandler(this.CanvasSafeUpper_Paint);
+            this.CanvasSafeUpper.Resize += new System.EventHandler(this.CanvasSafeUpper_Resize);
+            // 
             // PortableSafeDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
@@ -111,6 +140,8 @@
             this.MainPanel.ResumeLayout(false);
             this.MainTabs.ResumeLayout(false);
             this.TabSolver.ResumeLayout(false);
+            this.TabPractice.ResumeLayout(false);
+            this.PracticeTabLayout.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -122,5 +153,7 @@
         private System.Windows.Forms.TabPage TabSolver;
         private System.Windows.Forms.TabPage TabPractice;
         private System.Windows.Forms.TableLayoutPanel SolverTabLayout;
+        private System.Windows.Forms.TableLayoutPanel PracticeTabLayout;
+        private System.Windows.Forms.Panel CanvasSafeUpper;
     }
 }
