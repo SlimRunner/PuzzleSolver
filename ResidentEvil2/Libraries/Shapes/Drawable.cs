@@ -13,7 +13,6 @@ namespace ResidentEvil2.Libraries.Shapes
     {
         public Pen pen { get; set; }
         public Brush brush { get; set; }
-        public float wer;
 
         public Drawable()
         {

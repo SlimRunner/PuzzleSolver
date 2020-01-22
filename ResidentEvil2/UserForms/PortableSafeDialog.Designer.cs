@@ -125,6 +125,7 @@
             this.CanvasSafeUpper.Size = new System.Drawing.Size(188, 170);
             this.CanvasSafeUpper.TabIndex = 0;
             this.CanvasSafeUpper.Paint += new System.Windows.Forms.PaintEventHandler(this.CanvasSafeUpper_Paint);
+            this.CanvasSafeUpper.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CanvasSafeUpper_MouseMove);
             this.CanvasSafeUpper.Resize += new System.EventHandler(this.CanvasSafeUpper_Resize);
             // 
             // PortableSafeDialog

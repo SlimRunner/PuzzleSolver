@@ -45,57 +45,82 @@ namespace ResidentEvil2.Libraries.Shapes
 
         public void Rotate(float angle)
         {
-            throw new NotImplementedException();
+            matrix_p.SetRotation(angle);
+            Location = matrix_p.GetTransformation(Location);
+            matrix_p.ResetMatrix();
         }
 
         public void Shear(float horz, float vert)
         {
-            throw new NotImplementedException();
+            matrix_p.SetShear(horz, vert);
+            Location = matrix_p.GetTransformation(Location);
+            matrix_p.ResetMatrix();
         }
 
         public void Reflect(bool x, bool y)
         {
-            throw new NotImplementedException();
+            matrix_p.SetScale(x?-1:1, y?-1:1);
+            Location = matrix_p.GetTransformation(Location);
+            matrix_p.ResetMatrix();
         }
 
         public void Transform(Matrix3 matrix)
         {
             matrix_p = new Matrix3(matrix);
+            Location = matrix_p.GetTransformation(Location);
+            matrix_p.ResetMatrix();
         }
 
-        public Matrix3 SetMatrix()
+        public void SetMatrix()
         {
             throw new NotImplementedException();
         }
 
         public Matrix3 ApplyMatrix()
         {
-            throw new NotImplementedException();
+            Matrix3 oldMatrix = new Matrix3(matrix_p);
+            Location = matrix_p.GetTransformation(Location);
+            matrix_p.ResetMatrix();
+            return oldMatrix;
         }
 
         #endregion !mutators
 
         #region METHODS
-        public void Draw(PaintEventArgs e)
+        public void Draw(Graphics gf)
         {
-            e.Graphics.FillEllipse(brush, Location.X - Radius.X, Location.Y - Radius.Y, Radius.X * 2, Radius.Y * 2);
-            e.Graphics.DrawEllipse(pen, Location.X - Radius.X, Location.Y - Radius.Y, Radius.X * 2, Radius.Y * 2);
+            gf.FillEllipse(brush, Location.X - Radius.X, Location.Y - Radius.Y, Radius.X * 2, Radius.Y * 2);
+            gf.DrawEllipse(pen, Location.X - Radius.X, Location.Y - Radius.Y, Radius.X * 2, Radius.Y * 2);
         }
 
-        public void DrawTransformed(PaintEventArgs e)
+        public void DrawTransformed(Graphics gf)
         {
             Float2 point1 = new Float2(Location.X - Radius.X, Location.Y - Radius.Y), point2 = new Float2(Radius.X * 2, Radius.Y * 2);
 
             matrix_p.Transform(ref point1);
             matrix_p.Transform(ref point2);
 
-            e.Graphics.FillEllipse(brush, point1.X, point1.Y, point2.X, point2.Y);
-            e.Graphics.DrawEllipse(pen, point1.X, point1.Y, point2.X, point2.Y);
+            gf.FillEllipse(brush, point1.X, point1.Y, point2.X, point2.Y);
+            gf.DrawEllipse(pen, point1.X, point1.Y, point2.X, point2.Y);
         }
 
         public bool IsPointInside(Float2 vec, bool useTransformation = true)
         {
             Float2 vector = useTransformation ? matrix_p.GetTransformation(vec) : new Float2(vec);
+
+            return Float2.GetLength(vector, Location) <= Radius.Magnitude;
+        }
+
+        public bool IsPointInside(Point vec, bool useTransformation = true)
+        {
+            Float2 vector = useTransformation ? matrix_p.GetTransformation(new Float2(vec.X, vec.Y)) : new Float2(vec.X, vec.Y);
+
+            return Float2.GetLength(vector, Location) <= Radius.Magnitude;
+        }
+
+        public bool IsPointInside(float x, float y, bool useTransformation = true)
+        {
+            Float2 vector = useTransformation ? matrix_p.GetTransformation(new Float2(x, y)) : new Float2(x, y);
 
             return Float2.GetLength(vector, Location) <= Radius.Magnitude;
         }
