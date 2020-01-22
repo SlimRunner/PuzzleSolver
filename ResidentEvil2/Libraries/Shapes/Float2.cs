@@ -14,6 +14,15 @@ namespace ResidentEvil2.Libraries.Shapes
             CS_POLAR = 1
         }
 
+        #region PROPERTIES
+        public float X { get; set; }
+        public float Y { get; set; }
+
+        public float Magnitude => (float)Math.Sqrt(X * X + Y * Y);
+        public float Angle
+            => (Y + X != 0 ? (float)Math.Atan2(Y, X) : throw new Exception("undefined")); //NOTE: consider throwing error when both x and y are 0
+
+        #endregion !properties
 
         #region CONSTRUCTORS
         /// <summary>
@@ -56,17 +65,6 @@ namespace ResidentEvil2.Libraries.Shapes
 
         #endregion !constructors
 
-
-        #region PROPERTIES
-        public float X { get; set; }
-        public float Y { get; set; }
-
-        public float Magnitude => (float)Math.Sqrt(X * X + Y * Y);
-        public float Angle => (float)Math.Atan2(Y, X); //NOTE: consider throwing error when both x and y are 0
-
-        #endregion !properties
-
-
         #region MUTATORS
         public void SetRect(float x, float y)
         {
@@ -85,7 +83,7 @@ namespace ResidentEvil2.Libraries.Shapes
         #region ACCESSORS
         //Nothing yet
 
-        #endregion
+        #endregion !accessors
 
         #region OPERATORS
         public static Float2 operator +(Float2 lhs)
@@ -106,6 +104,11 @@ namespace ResidentEvil2.Libraries.Shapes
         public static Float2 operator /(Float2 lhs, Float2 rhs)
             => new Float2(lhs.X / rhs.X, lhs.Y / rhs.Y);
 
-        #endregion
+        #endregion !operators
+
+        public static float GetLength(Float2 vec1, Float2 vec2)
+        {
+            return (vec1 - vec2).Magnitude;
+        }
     }
 }

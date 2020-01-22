@@ -46,7 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Libraries\Shapes\Circle.cs" />
+    <Compile Include="Libraries\Shapes\Drawable.cs" />
     <Compile Include="Libraries\Shapes\Float2.cs" />
+    <Compile Include="Libraries\Shapes\Matrix3.cs" />
+    <Compile Include="Libraries\Shapes\ShapeNode.cs" />
+    <Compile Include="Libraries\Shapes\ITransformable.cs" />
     <Compile Include="UserForms\MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
