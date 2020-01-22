@@ -107,22 +107,27 @@ namespace ResidentEvil2.Libraries.Shapes
         public bool IsPointInside(Float2 vec, bool useTransformation = true)
         {
             Float2 vector = useTransformation ? matrix_p.GetTransformation(vec) : new Float2(vec);
+            Float2 boundary = Float2.Pow2((vector - Location) / Radius);
 
-            return Float2.GetLength(vector, Location) <= Radius.Magnitude;
+            return boundary.X + boundary.Y <= 1;
         }
 
         public bool IsPointInside(Point vec, bool useTransformation = true)
         {
             Float2 vector = useTransformation ? matrix_p.GetTransformation(new Float2(vec.X, vec.Y)) : new Float2(vec.X, vec.Y);
+            Float2 boundary = Float2.Pow2((vector - Location) / Radius);
 
-            return Float2.GetLength(vector, Location) <= Radius.Magnitude;
+            return boundary.X + boundary.Y <= 1;
         }
 
         public bool IsPointInside(float x, float y, bool useTransformation = true)
         {
-            Float2 vector = useTransformation ? matrix_p.GetTransformation(new Float2(x, y)) : new Float2(x, y);
+            //https://math.stackexchange.com/questions/76457/check-if-a-point-is-within-an-ellipse
 
-            return Float2.GetLength(vector, Location) <= Radius.Magnitude;
+            Float2 vector = useTransformation ? matrix_p.GetTransformation(new Float2(x, y)) : new Float2(x, y);
+            Float2 boundary = Float2.Pow2((vector - Location) / Radius);
+
+            return boundary.X + boundary.Y <= 1;
         }
 
         #endregion !methods

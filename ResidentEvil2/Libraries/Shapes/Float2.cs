@@ -78,6 +78,11 @@ namespace ResidentEvil2.Libraries.Shapes
             Y = radius * (float)Math.Sin(theta);
         }
 
+        public static Float2 Pow2(Float2 other)
+        {
+            return new Float2(other.X * other.X, other.Y * other.Y);
+        }
+
         #endregion !mutators
 
         #region ACCESSORS
