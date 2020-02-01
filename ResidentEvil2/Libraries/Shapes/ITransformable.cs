@@ -18,7 +18,13 @@ namespace ResidentEvil2.Libraries.Shapes
         void Shear(float horz, float vert);
         void Reflect(bool x, bool y);
         void Transform(Matrix3 matrix);
-        void SetMatrix();
-        Matrix3 ApplyMatrix();
+        void MoveMatrix(float x, float y);
+        void ScaleMatrix(float w, float h);
+        void RotateMatrix(float angle);
+        void ShearMatrix(float horz, float vert);
+        void ReflectMatrix(bool x, bool y);
+        void SetMatrix(Matrix3 matrix);
+        Matrix3 ApplyTransformation();
+        void DiscardTransformation();
     }
 }

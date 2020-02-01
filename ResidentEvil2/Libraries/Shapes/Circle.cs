@@ -59,7 +59,7 @@ namespace ResidentEvil2.Libraries.Shapes
 
         public void Reflect(bool x, bool y)
         {
-            matrix_p.SetScale(x?-1:1, y?-1:1);
+            matrix_p.SetScale(x ? -1 : 1, y ? -1 : 1);
             Location = matrix_p.GetTransformation(Location);
             matrix_p.ResetMatrix();
         }
@@ -71,17 +71,47 @@ namespace ResidentEvil2.Libraries.Shapes
             matrix_p.ResetMatrix();
         }
 
-        public void SetMatrix()
+        public void MoveMatrix(float x, float y)
         {
-            throw new NotImplementedException();
+            matrix_p.AddTranslation(x, y);
         }
 
-        public Matrix3 ApplyMatrix()
+        public void ScaleMatrix(float w, float h)
+        {
+            matrix_p.AddScale(w, h);
+        }
+
+        public void RotateMatrix(float angle)
+        {
+            matrix_p.AddRotation(angle);
+        }
+
+        public void ShearMatrix(float horz, float vert)
+        {
+            matrix_p.AddShear(horz, vert);
+        }
+
+        public void ReflectMatrix(bool x, bool y)
+        {
+            matrix_p.AddScale(x ? -1 : 1, y ? -1 : 1);
+        }
+
+        public void SetMatrix(Matrix3 matrix)
+        {
+            matrix_p = new Matrix3(matrix);
+        }
+
+        public Matrix3 ApplyTransformation()
         {
             Matrix3 oldMatrix = new Matrix3(matrix_p);
             Location = matrix_p.GetTransformation(Location);
             matrix_p.ResetMatrix();
             return oldMatrix;
+        }
+
+        public void DiscardTransformation()
+        {
+            matrix_p.ResetMatrix();
         }
 
         #endregion !mutators
@@ -95,28 +125,36 @@ namespace ResidentEvil2.Libraries.Shapes
 
         public void DrawTransformed(Graphics gf)
         {
-            Float2 point1 = new Float2(Location.X - Radius.X, Location.Y - Radius.Y), point2 = new Float2(Radius.X * 2, Radius.Y * 2);
-
-            matrix_p.Transform(ref point1);
-            matrix_p.Transform(ref point2);
-
-            gf.FillEllipse(brush, point1.X, point1.Y, point2.X, point2.Y);
-            gf.DrawEllipse(pen, point1.X, point1.Y, point2.X, point2.Y);
+            Float2 transLoc = matrix_p.GetTransformation(Location);
+            gf.FillEllipse(brush, transLoc.X - Radius.X, transLoc.Y - Radius.Y, Radius.X * 2, Radius.Y * 2);
+            gf.DrawEllipse(pen, transLoc.X - Radius.X, transLoc.Y - Radius.Y, Radius.X * 2, Radius.Y * 2);
         }
 
         public bool IsPointInside(Float2 vec, bool useTransformation = true)
         {
-            Float2 vector = useTransformation ? matrix_p.GetTransformation(vec) : new Float2(vec);
-            Float2 boundary = Float2.Pow2((vector - Location) / Radius);
+            Float2 vector = new Float2(vec);
+            Float2 boundary, transLoc;
 
+            if (!useTransformation)
+                transLoc = Location;
+            else
+                transLoc = matrix_p.GetTransformation(Location);
+
+            boundary = Float2.Pow2((vector - transLoc) / Radius);
             return boundary.X + boundary.Y <= 1;
         }
 
-        public bool IsPointInside(Point vec, bool useTransformation = true)
+        public bool IsPointInside(Point vec, bool useTransformation = false)
         {
-            Float2 vector = useTransformation ? matrix_p.GetTransformation(new Float2(vec.X, vec.Y)) : new Float2(vec.X, vec.Y);
-            Float2 boundary = Float2.Pow2((vector - Location) / Radius);
+            Float2 vector = new Float2(vec.X, vec.Y);
+            Float2 boundary, transLoc;
 
+            if (!useTransformation)
+                transLoc = Location;
+            else
+                transLoc = matrix_p.GetTransformation(Location);
+
+            boundary = Float2.Pow2((vector - transLoc) / Radius);
             return boundary.X + boundary.Y <= 1;
         }
 
@@ -124,9 +162,15 @@ namespace ResidentEvil2.Libraries.Shapes
         {
             //https://math.stackexchange.com/questions/76457/check-if-a-point-is-within-an-ellipse
 
-            Float2 vector = useTransformation ? matrix_p.GetTransformation(new Float2(x, y)) : new Float2(x, y);
-            Float2 boundary = Float2.Pow2((vector - Location) / Radius);
+            Float2 vector = new Float2(x, y);
+            Float2 boundary, transLoc;
 
+            if (!useTransformation)
+                transLoc = Location;
+            else
+                transLoc = matrix_p.GetTransformation(Location);
+
+            boundary = Float2.Pow2((vector - transLoc) / Radius);
             return boundary.X + boundary.Y <= 1;
         }
 

@@ -41,7 +41,7 @@ namespace ResidentEvil2.UserForms
 
             for (int i = 0; i < NODECOUNT; ++i)
             {
-                if (node_ring[i].IsPointInside(e.Location))
+                if (node_ring[i].IsPointInside(e.Location, true))
                 {
                     if (node_ring[i].brush != Brushes.Red)
                     {
@@ -64,7 +64,13 @@ namespace ResidentEvil2.UserForms
 
         private void CanvasSafeUpper_Resize(object sender, EventArgs e)
         {
-            ringScalar = Math.Min(CanvasSafeUpper.Width, CanvasSafeUpper.Height) / 2;
+            ringScalar = Math.Min(CanvasSafeUpper.Width, CanvasSafeUpper.Height) / 2 - nodeRadius * 2;
+            foreach (Circle shape in node_ring)
+            {
+                shape.DiscardTransformation();
+                shape.MoveMatrix(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
+                shape.ScaleMatrix(ringScalar, ringScalar);
+            }
         }
 
         #endregion !events
@@ -77,7 +83,7 @@ namespace ResidentEvil2.UserForms
             
             foreach (Circle shape in node_ring)
             {
-                shape.Draw(gf);
+                shape.DrawTransformed(gf);
             }
 
             e.Graphics.DrawImage(backbuffer, 0, 0);
@@ -100,8 +106,10 @@ namespace ResidentEvil2.UserForms
                 };
                 shapes[i].Location.X = (float)Math.Cos((double)i / sides * DOU_PI + rotation) * radius;
                 shapes[i].Location.Y = (float)Math.Sin((double)i / sides * DOU_PI + rotation) * radius;
-                shapes[i].Scale(ringScalar, ringScalar);
-                shapes[i].Move(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
+                //shapes[i].Scale(ringScalar, ringScalar);
+                //shapes[i].Move(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
+                shapes[i].MoveMatrix(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
+                shapes[i].ScaleMatrix(ringScalar, ringScalar);
             }
 
             return shapes;
