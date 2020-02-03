@@ -64,7 +64,7 @@ namespace ResidentEvil2.UserForms
 
         private void CanvasSafeUpper_Resize(object sender, EventArgs e)
         {
-            ringScalar = Math.Min(CanvasSafeUpper.Width, CanvasSafeUpper.Height) / 2 - nodeRadius * 2;
+            ringScalar = Math.Max(Math.Min(CanvasSafeUpper.Width, CanvasSafeUpper.Height) / 2 - nodeRadius * 2, 0);
             foreach (Circle shape in node_ring)
             {
                 shape.DiscardTransformation();
