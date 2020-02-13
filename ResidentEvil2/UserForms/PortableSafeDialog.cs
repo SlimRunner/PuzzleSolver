@@ -35,7 +35,9 @@ namespace ResidentEvil2.UserForms
                     Math.Max(CanvasSafeUpper.Height / 2 - nodeRadius * 2, 0));
             node_ring = GetRing(NODECOUNT, 1, (float)Math.PI / NODECOUNT);
 
-            gridScalar = new Float2(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
+            gridScalar = new Float2(
+                    Math.Max(CanvasSafeLower.Width / 2 - nodeRadius * 2, 0),
+                    Math.Max(CanvasSafeLower.Height / 2 - nodeRadius * 2, 0));
             node_grid = GetGrid(NODECOUNT, 2, 1);
         }
 
@@ -49,21 +51,21 @@ namespace ResidentEvil2.UserForms
         {
             bool imageChanged = false;
 
-            for (int i = 0; i < NODECOUNT; ++i)
+            foreach (Circle shape in node_ring)
             {
-                if (node_ring[i].IsPointInside(e.Location, true))
+                if (shape.IsPointInside(e.Location, true))
                 {
-                    if (node_ring[i].brush != Brushes.Red)
+                    if (shape.brush != Brushes.Red)
                     {
-                        node_ring[i].brush = Brushes.Red;
+                        shape.brush = Brushes.Red;
                         imageChanged = true;
                     }
                 }
                 else
                 {
-                    if (node_ring[i].brush != Brushes.White)
+                    if (shape.brush != Brushes.White)
                     {
-                        node_ring[i].brush = Brushes.White;
+                        shape.brush = Brushes.White;
                         imageChanged = true;
                     }
                 }
@@ -74,10 +76,10 @@ namespace ResidentEvil2.UserForms
 
         private void CanvasSafeUpper_Resize(object sender, EventArgs e)
         {
+            //NOTE: add function to resize and bundle with grid Resize
             ringScalar.SetRect(
                 Math.Max(CanvasSafeUpper.Width / 2 - nodeRadius * 2, 0),
                 Math.Max(CanvasSafeUpper.Height / 2 - nodeRadius * 2, 0));
-            gridScalar.SetRect(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
 
             Matrix3 ringTrans = new Matrix3();
             ringTrans.AddTranslation(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
@@ -90,6 +92,56 @@ namespace ResidentEvil2.UserForms
             }
         }
 
+        private void CanvasSafeLower_Paint(object sender, PaintEventArgs e)
+        {
+            DrawOutputGrid(e);
+        }
+
+        private void CanvasSafeLower_MouseMove(object sender, MouseEventArgs e)
+        {
+            bool imageChanged = false;
+
+            foreach (Circle shape in node_grid)
+            {
+                if (shape.IsPointInside(e.Location, true))
+                {
+                    if (shape.brush != Brushes.Red)
+                    {
+                        shape.brush = Brushes.Red;
+                        imageChanged = true;
+                    }
+                }
+                else
+                {
+                    if (shape.brush != Brushes.White)
+                    {
+                        shape.brush = Brushes.White;
+                        imageChanged = true;
+                    }
+                }
+            }
+
+            if (imageChanged) CanvasSafeLower.Invalidate();
+        }
+
+        private void CanvasSafeLower_Resize(object sender, EventArgs e)
+        {
+            //NOTE: add function to resize and bundle with ring Resize
+            gridScalar.SetRect(
+                Math.Max(CanvasSafeLower.Width / 2 - nodeRadius * 2, 0),
+                Math.Max(CanvasSafeLower.Height / 2 - nodeRadius * 2, 0));
+
+            Matrix3 gridTrans = new Matrix3();
+            gridTrans.AddTranslation(CanvasSafeLower.Width / 2, CanvasSafeLower.Height / 2);
+            gridTrans.AddScale(gridScalar.X, gridScalar.Y);
+
+            foreach (Circle shape in node_grid)
+            {
+                shape.DiscardTransformation();
+                shape.SetMatrix(gridTrans);
+            }
+        }
+
         #endregion !events
 
         #region DRAWING
@@ -99,6 +151,22 @@ namespace ResidentEvil2.UserForms
             Graphics gf = Graphics.FromImage(backbuffer);
             
             foreach (Circle shape in node_ring)
+            {
+                shape.DrawTransformed(gf);
+            }
+
+            e.Graphics.DrawImage(backbuffer, 0, 0);
+
+            gf.Dispose();
+            backbuffer.Dispose();
+        }
+
+        private void DrawOutputGrid(PaintEventArgs e)
+        {
+            Bitmap backbuffer = new Bitmap(CanvasSafeLower.Width, CanvasSafeLower.Height);
+            Graphics gf = Graphics.FromImage(backbuffer);
+
+            foreach (Circle shape in node_grid)
             {
                 shape.DrawTransformed(gf);
             }
@@ -142,7 +210,7 @@ namespace ResidentEvil2.UserForms
             int colMax = cols - 1;
 
             Matrix3 shapeTrans = new Matrix3();
-            shapeTrans.AddTranslation(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
+            shapeTrans.AddTranslation(CanvasSafeLower.Width / 2, CanvasSafeLower.Height / 2);
             shapeTrans.AddScale(gridScalar.X, gridScalar.Y);
 
             size *= 2;

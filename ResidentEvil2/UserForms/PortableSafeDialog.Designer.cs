@@ -35,6 +35,7 @@
             this.TabPractice = new System.Windows.Forms.TabPage();
             this.PracticeTabLayout = new System.Windows.Forms.TableLayoutPanel();
             this.CanvasSafeUpper = new System.Windows.Forms.Panel();
+            this.CanvasSafeLower = new System.Windows.Forms.Panel();
             this.MainPanel.SuspendLayout();
             this.MainTabs.SuspendLayout();
             this.TabSolver.SuspendLayout();
@@ -108,6 +109,7 @@
             this.PracticeTabLayout.ColumnCount = 2;
             this.PracticeTabLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.PracticeTabLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.PracticeTabLayout.Controls.Add(this.CanvasSafeLower, 0, 1);
             this.PracticeTabLayout.Controls.Add(this.CanvasSafeUpper, 0, 0);
             this.PracticeTabLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PracticeTabLayout.Location = new System.Drawing.Point(4, 5);
@@ -128,6 +130,17 @@
             this.CanvasSafeUpper.Paint += new System.Windows.Forms.PaintEventHandler(this.CanvasSafeUpper_Paint);
             this.CanvasSafeUpper.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CanvasSafeUpper_MouseMove);
             this.CanvasSafeUpper.Resize += new System.EventHandler(this.CanvasSafeUpper_Resize);
+            // 
+            // CanvasSafeLower
+            // 
+            this.CanvasSafeLower.BackColor = System.Drawing.Color.Gray;
+            this.CanvasSafeLower.Location = new System.Drawing.Point(3, 197);
+            this.CanvasSafeLower.Name = "CanvasSafeLower";
+            this.CanvasSafeLower.Size = new System.Drawing.Size(188, 170);
+            this.CanvasSafeLower.TabIndex = 1;
+            this.CanvasSafeLower.Paint += new System.Windows.Forms.PaintEventHandler(this.CanvasSafeLower_Paint);
+            this.CanvasSafeLower.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CanvasSafeLower_MouseMove);
+            this.CanvasSafeLower.Resize += new System.EventHandler(this.CanvasSafeLower_Resize);
             // 
             // PortableSafeDialog
             // 
@@ -157,5 +170,6 @@
         private System.Windows.Forms.TableLayoutPanel SolverTabLayout;
         private System.Windows.Forms.TableLayoutPanel PracticeTabLayout;
         private System.Windows.Forms.Panel CanvasSafeUpper;
+        private System.Windows.Forms.Panel CanvasSafeLower;
     }
 }
