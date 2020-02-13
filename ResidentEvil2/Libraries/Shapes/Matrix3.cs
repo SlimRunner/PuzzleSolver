@@ -23,6 +23,8 @@ namespace ResidentEvil2.Libraries.Shapes
 
         public Matrix3(Matrix3 other)
         {
+            mtx = new float[MATRIX_SIZE, MATRIX_SIZE];
+
             for (int row = 0; row < MATRIX_SIZE; ++row)
             {
                 for (int col = 0; col < MATRIX_SIZE; ++col)

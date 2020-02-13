@@ -17,16 +17,26 @@ namespace ResidentEvil2.UserForms
         private const int NODECOUNT = 8;
 
         private Circle[] node_ring;
-        private float ringScalar;
+        private Float2 ringScalar;
         private float nodeRadius;
+
+        private Circle[] node_grid;
+        private Float2 gridScalar;
 
         public PortableSafeDialog()
         {
             InitializeComponent();
 
             nodeRadius = 10;
-            ringScalar = Math.Min(CanvasSafeUpper.Width, CanvasSafeUpper.Height) / 2 - nodeRadius * 2;
+            //ringScalar = Math.Min(CanvasSafeUpper.Width, CanvasSafeUpper.Height) / 2 - nodeRadius * 2;
+            ringScalar = 
+                new Float2(
+                    Math.Max(CanvasSafeUpper.Width / 2 - nodeRadius * 2, 0),
+                    Math.Max(CanvasSafeUpper.Height / 2 - nodeRadius * 2, 0));
             node_ring = GetRing(NODECOUNT, 1, (float)Math.PI / NODECOUNT);
+
+            gridScalar = new Float2(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
+            node_grid = GetGrid(NODECOUNT, 2, 1);
         }
 
         #region EVENTS
@@ -64,12 +74,19 @@ namespace ResidentEvil2.UserForms
 
         private void CanvasSafeUpper_Resize(object sender, EventArgs e)
         {
-            ringScalar = Math.Max(Math.Min(CanvasSafeUpper.Width, CanvasSafeUpper.Height) / 2 - nodeRadius * 2, 0);
+            ringScalar.SetRect(
+                Math.Max(CanvasSafeUpper.Width / 2 - nodeRadius * 2, 0),
+                Math.Max(CanvasSafeUpper.Height / 2 - nodeRadius * 2, 0));
+            gridScalar.SetRect(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
+
+            Matrix3 ringTrans = new Matrix3();
+            ringTrans.AddTranslation(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
+            ringTrans.AddScale(ringScalar.X, ringScalar.Y);
+
             foreach (Circle shape in node_ring)
             {
                 shape.DiscardTransformation();
-                shape.MoveMatrix(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
-                shape.ScaleMatrix(ringScalar, ringScalar);
+                shape.SetMatrix(ringTrans);
             }
         }
 
@@ -92,24 +109,53 @@ namespace ResidentEvil2.UserForms
             backbuffer.Dispose();
         }
 
-        private Circle[] GetRing(uint sides, float radius, float rotation)
+        private Circle[] GetRing(uint nodeCount, float radius, float rotation)
         {
-            Circle[] shapes = new Circle[sides];
-
             const double DOU_PI = Math.PI * 2;
 
-            for (int i = 0; i < sides; ++i)
+            Circle[] shapes = new Circle[nodeCount];
+            Matrix3 shapeTrans = new Matrix3();
+            shapeTrans.AddTranslation(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
+            shapeTrans.AddScale(ringScalar.X, ringScalar.Y);
+
+            for (int i = 0; i < nodeCount; ++i)
             {
                 shapes[i] = new Circle
                 {
                     Radius = new Float2(nodeRadius, nodeRadius)
                 };
-                shapes[i].Location.X = (float)Math.Cos((double)i / sides * DOU_PI + rotation) * radius;
-                shapes[i].Location.Y = (float)Math.Sin((double)i / sides * DOU_PI + rotation) * radius;
-                //shapes[i].Scale(ringScalar, ringScalar);
-                //shapes[i].Move(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
-                shapes[i].MoveMatrix(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
-                shapes[i].ScaleMatrix(ringScalar, ringScalar);
+                shapes[i].Location.X = (float)Math.Cos((double)i / nodeCount * DOU_PI + rotation) * radius;
+                shapes[i].Location.Y = (float)Math.Sin((double)i / nodeCount * DOU_PI + rotation) * radius;
+                shapes[i].SetMatrix(shapeTrans);
+            }
+
+            return shapes;
+        }
+
+        private Circle[] GetGrid(uint nodeCount, int cols, float size)
+        {
+            if (cols < 0)
+                throw new ArgumentException("cols cannot be negative");
+
+            Circle[] shapes = new Circle[nodeCount];
+            int rowMax = ((int)nodeCount - 1) / cols;
+            int colMax = cols - 1;
+
+            Matrix3 shapeTrans = new Matrix3();
+            shapeTrans.AddTranslation(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
+            shapeTrans.AddScale(gridScalar.X, gridScalar.Y);
+
+            size *= 2;
+
+            for (int i = 0; i < nodeCount; ++i)
+            {
+                shapes[i] = new Circle
+                {
+                    Radius = new Float2(nodeRadius, nodeRadius)
+                };
+                shapes[i].Location.X = (float)(i % cols) / colMax * size - 1;
+                shapes[i].Location.Y = (float)(i / cols) / rowMax * size - 1;
+                shapes[i].SetMatrix(shapeTrans);
             }
 
             return shapes;

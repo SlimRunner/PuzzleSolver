@@ -120,6 +120,7 @@
             // 
             // CanvasSafeUpper
             // 
+            this.CanvasSafeUpper.BackColor = System.Drawing.Color.Gray;
             this.CanvasSafeUpper.Location = new System.Drawing.Point(3, 3);
             this.CanvasSafeUpper.Name = "CanvasSafeUpper";
             this.CanvasSafeUpper.Size = new System.Drawing.Size(188, 170);
