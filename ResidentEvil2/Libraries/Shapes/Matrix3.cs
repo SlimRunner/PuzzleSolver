@@ -123,7 +123,7 @@ namespace ResidentEvil2.Libraries.Shapes
             trans[0, 2] = x;
             trans[1, 2] = y;
 
-            Multiply(trans);
+            MultiplyRTL(trans);
         }
 
         public void AddScale(float xScale, float yScale)
@@ -134,7 +134,7 @@ namespace ResidentEvil2.Libraries.Shapes
             scale[1, 0] = 0;
             scale[1, 1] = yScale;
 
-            Multiply(scale);
+            MultiplyRTL(scale);
         }
 
         public void AddRotation(float angle)
@@ -151,7 +151,7 @@ namespace ResidentEvil2.Libraries.Shapes
             rot[1, 0] = (float)-Math.Sin(angle);
             rot[1, 1] = (float)Math.Cos(angle);
 
-            Multiply(rot);
+            MultiplyRTL(rot);
         }
 
         public void AddShear(float xAngle, float yAngle)
@@ -162,7 +162,7 @@ namespace ResidentEvil2.Libraries.Shapes
             shear[1, 0] = (float)Math.Tan(yAngle);
             shear[1, 1] = 1;
 
-            Multiply(shear);
+            MultiplyRTL(shear);
         }
 
         public void SetMatrix(float[,] indices)
@@ -215,27 +215,36 @@ namespace ResidentEvil2.Libraries.Shapes
             vector.Y = mtx[1, 0] * vector.X + mtx[1, 1] * vector.Y + mtx[1, 2];
         }
 
-        private void Multiply(Matrix3 rhs)
+        private void MultiplyRTL(Matrix3 lhs)
         {
-            /* Matrix multiplication
+            /* Matrix multiplication (Applies from right to left)
+             * A = A*B
+             *    A             B
              * a  b  c       p  q  r       ap+dq+gr  as+dt+gu  av+dw+gx
              * d  e  f   *   s  t  u   =   bp+eq+hr  bs+et+hu  bv+ew+hx
              * g  h  i       v  w  x       cp+fq+ir  cs+ft+iu  cv+fw+ix
              * 
+             * 
+             * A = B*A
+             *    B             A
+             * p  q  r       a  b  c       ap+dq+gr  bp+eq+hr  cp+fq+ir
+             * s  t  u   *   d  e  f   =   as+dt+gu  bs+et+hu  cs+ft+iu
+             * v  w  x       g  h  i       av+dw+gx  bv+ew+hx  cv+fw+ix
+             * 
              * https://matrixcalc.org/en/
              */
 
-            mtx[0, 0] = mtx[0, 0] * rhs[0, 0] + mtx[0, 1] * rhs[1, 0] + mtx[0, 2] * rhs[2, 0]; //  x  x  x
-            mtx[0, 1] = mtx[0, 0] * rhs[0, 1] + mtx[0, 1] * rhs[1, 1] + mtx[0, 2] * rhs[2, 1]; //  .  .  .
-            mtx[0, 2] = mtx[0, 0] * rhs[0, 2] + mtx[0, 1] * rhs[1, 2] + mtx[0, 2] * rhs[2, 2]; //  .  .  .
+            mtx[0, 0] = mtx[0, 0] * lhs[0, 0] + mtx[1, 0] * lhs[0, 1] + mtx[2, 0] * lhs[0, 2]; //  x  x  x
+            mtx[0, 1] = mtx[0, 1] * lhs[0, 0] + mtx[1, 1] * lhs[0, 1] + mtx[2, 1] * lhs[0, 2]; //  .  .  .
+            mtx[0, 2] = mtx[0, 2] * lhs[0, 0] + mtx[1, 2] * lhs[0, 1] + mtx[2, 2] * lhs[0, 2]; //  .  .  .
 
-            mtx[1, 0] = mtx[1, 0] * rhs[0, 0] + mtx[1, 1] * rhs[1, 0] + mtx[1, 2] * rhs[2, 0]; //  .  .  .
-            mtx[1, 1] = mtx[1, 0] * rhs[0, 1] + mtx[1, 1] * rhs[1, 1] + mtx[1, 2] * rhs[2, 1]; //  x  x  x
-            mtx[1, 2] = mtx[1, 0] * rhs[0, 2] + mtx[1, 1] * rhs[1, 2] + mtx[1, 2] * rhs[2, 2]; //  .  .  .
+            mtx[1, 0] = mtx[0, 0] * lhs[1, 0] + mtx[1, 0] * lhs[1, 1] + mtx[2, 0] * lhs[1, 2]; //  .  .  .
+            mtx[1, 1] = mtx[0, 1] * lhs[1, 0] + mtx[1, 1] * lhs[1, 1] + mtx[2, 1] * lhs[1, 2]; //  x  x  x
+            mtx[1, 2] = mtx[0, 2] * lhs[1, 0] + mtx[1, 2] * lhs[1, 1] + mtx[2, 2] * lhs[1, 2]; //  .  .  .
 
-            mtx[2, 0] = mtx[2, 0] * rhs[0, 0] + mtx[2, 1] * rhs[1, 0] + mtx[2, 2] * rhs[2, 0]; //  .  .  .
-            mtx[2, 1] = mtx[2, 0] * rhs[0, 1] + mtx[2, 1] * rhs[1, 1] + mtx[2, 2] * rhs[2, 1]; //  .  .  .
-            mtx[2, 2] = mtx[2, 0] * rhs[0, 2] + mtx[2, 1] * rhs[1, 2] + mtx[2, 2] * rhs[2, 2]; //  x  x  x
+            mtx[2, 0] = mtx[0, 0] * lhs[2, 0] + mtx[1, 0] * lhs[2, 1] + mtx[2, 0] * lhs[2, 2]; //  .  .  .
+            mtx[2, 1] = mtx[0, 1] * lhs[2, 0] + mtx[1, 1] * lhs[2, 1] + mtx[2, 1] * lhs[2, 2]; //  .  .  .
+            mtx[2, 2] = mtx[0, 2] * lhs[2, 0] + mtx[1, 2] * lhs[2, 1] + mtx[2, 2] * lhs[2, 2]; //  x  x  x
         }
 
         #endregion !mutators

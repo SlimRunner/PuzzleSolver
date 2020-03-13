@@ -82,8 +82,8 @@ namespace ResidentEvil2.UserForms
                 Math.Max(CanvasSafeUpper.Height / 2 - nodeRadius * 2, 0));
 
             Matrix3 ringTrans = new Matrix3();
-            ringTrans.AddTranslation(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
             ringTrans.AddScale(ringScalar.X, ringScalar.Y);
+            ringTrans.AddTranslation(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
 
             foreach (Circle shape in node_ring)
             {
@@ -132,8 +132,8 @@ namespace ResidentEvil2.UserForms
                 Math.Max(CanvasSafeLower.Height / 2 - nodeRadius * 2, 0));
 
             Matrix3 gridTrans = new Matrix3();
-            gridTrans.AddTranslation(CanvasSafeLower.Width / 2, CanvasSafeLower.Height / 2);
             gridTrans.AddScale(gridScalar.X, gridScalar.Y);
+            gridTrans.AddTranslation(CanvasSafeLower.Width / 2, CanvasSafeLower.Height / 2);
 
             foreach (Circle shape in node_grid)
             {
@@ -183,8 +183,8 @@ namespace ResidentEvil2.UserForms
 
             Circle[] shapes = new Circle[nodeCount];
             Matrix3 shapeTrans = new Matrix3();
-            shapeTrans.AddTranslation(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
             shapeTrans.AddScale(ringScalar.X, ringScalar.Y);
+            shapeTrans.AddTranslation(CanvasSafeUpper.Width / 2, CanvasSafeUpper.Height / 2);
 
             for (int i = 0; i < nodeCount; ++i)
             {
@@ -210,8 +210,8 @@ namespace ResidentEvil2.UserForms
             int colMax = cols - 1;
 
             Matrix3 shapeTrans = new Matrix3();
-            shapeTrans.AddTranslation(CanvasSafeLower.Width / 2, CanvasSafeLower.Height / 2);
             shapeTrans.AddScale(gridScalar.X, gridScalar.Y);
+            shapeTrans.AddTranslation(CanvasSafeLower.Width / 2, CanvasSafeLower.Height / 2);
 
             size *= 2;
 
