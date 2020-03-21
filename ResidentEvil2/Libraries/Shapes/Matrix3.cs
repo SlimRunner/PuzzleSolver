@@ -147,8 +147,8 @@ namespace ResidentEvil2.Libraries.Shapes
 
             Matrix3 rot = new Matrix3();
             rot[0, 0] = (float)Math.Cos(angle);
-            rot[0, 1] = (float)Math.Sin(angle);
-            rot[1, 0] = (float)-Math.Sin(angle);
+            rot[0, 1] = (float)-Math.Sin(angle);
+            rot[1, 0] = (float)Math.Sin(angle);
             rot[1, 1] = (float)Math.Cos(angle);
 
             MultiplyRTL(rot);
@@ -220,9 +220,9 @@ namespace ResidentEvil2.Libraries.Shapes
             /* Matrix multiplication (Applies from right to left)
              * A = A*B
              *    A             B
-             * a  b  c       p  q  r       ap+dq+gr  as+dt+gu  av+dw+gx
-             * d  e  f   *   s  t  u   =   bp+eq+hr  bs+et+hu  bv+ew+hx
-             * g  h  i       v  w  x       cp+fq+ir  cs+ft+iu  cv+fw+ix
+             * a  b  c       p  q  r       ap+bs+cv  aq+bt+cw  ar+bu+cx
+             * d  e  f   *   s  t  u   =   dp+es+fv  dq+et+fw  dr+eu+fx
+             * g  h  i       v  w  x       gp+hs+iv  gq+ht+iw  gr+hu+ix
              * 
              * 
              * A = B*A
